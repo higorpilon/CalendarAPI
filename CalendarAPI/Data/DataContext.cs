@@ -10,6 +10,8 @@ namespace CalendarAPI.Data
     public class DataContext : DbContext
     {
 
+        public DbSet<Slot> Slots { get; set; }
+
 
         public DbSet<Participant> Participants { get; set; }
 

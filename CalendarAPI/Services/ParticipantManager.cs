@@ -1,4 +1,5 @@
 ﻿using CalendarAPI.Data.Entities;
+using CalendarAPI.Data.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,13 @@ namespace CalendarAPI.Services
 {
     public class ParticipantManager : IParticipantManager
     {
+        private readonly ISlotRepository _slotRepository;
+
+        public ParticipantManager(ISlotRepository slotRepository)
+        {
+            _slotRepository = slotRepository;
+        }
+
         public bool AreParticipantsValid(Participant participantOne, Participant participantTwo)
         {
             if (participantOne == null || participantTwo == null)
@@ -45,11 +53,24 @@ namespace CalendarAPI.Services
             return false;
         }
 
-        public IQueryable<Meeting> PossibleSchedules(Participant participantOne, Participant participantTwo)
+        public void CreateAvailability(Participant participant)
+        {
+            DateTime initTime = participant.StartingTime;
+            DateTime endTime = participant.FinalTime;
+
+
+            do
+            {
+
+                initTime.AddHours(1); //adicionar 1 hora (tempo de cada reunião)
+            } while (initTime < endTime);
+        }
+
+        public IQueryable<Slot> PossibleSchedules(Participant participantOne, Participant participantTwo)
         {
             if (AreParticipantsValid(participantOne, participantTwo))
             {
-                var interview = new Interview();
+                
                 throw new Exception();
 
                 //TODO

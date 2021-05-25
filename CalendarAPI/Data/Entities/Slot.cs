@@ -1,5 +1,4 @@
-﻿using CalendarAPI.Helpers.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,22 +6,23 @@ using System.Threading.Tasks;
 
 namespace CalendarAPI.Data.Entities
 {
-    public class Meeting
+    public class Slot
     {
         [Key]
         public int Id { get; set; }
 
-
-        [Required]
-        public virtual Participant InterviewerId { get; set; }
-
-
         [Required]
         [DataType(DataType.DateTime)]
-        public DateTime Date { get; set; }
+        public DateTime StartTime { get; set; }
+        
 
 
-        [Required]
+        public int InterviewerId { get; set; }
+        public virtual Participant Interviewer { get; set; }
+
+
+
+        public int CandidadeId { get; set; }
         public virtual Participant CandidateId { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace CalendarAPI.Services
     {
         bool AreParticipantsValid(Participant participantOne, Participant participantTwo);
 
-        IQueryable<DateTime> PossibleSchedules(Participant participantOne, Participant participantTwo);
+        IQueryable<Slot> PossibleSchedules(Participant participantOne, Participant participantTwo);
 
         bool IsSingleParticipantValid(Participant participant);
     }

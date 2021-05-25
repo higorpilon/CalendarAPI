@@ -36,7 +36,7 @@ namespace CalendarAPI.Services
         public bool IsSingleParticipantValid(Participant participant)
         {
 
-            if (participant.StartingTime.Minute == 0)
+            if (participant.StartingTime.Minute == 0 && participant.FinalTime.Minute == 0)
             {
                 if (participant.StartingTime < participant.FinalTime)
                 {
@@ -53,14 +53,22 @@ namespace CalendarAPI.Services
             return false;
         }
 
-        public void CreateAvailability(Participant participant)
+        public async void CreateAvailability(Participant participant)
         {
             DateTime initTime = participant.StartingTime;
             DateTime endTime = participant.FinalTime;
 
-
             do
             {
+                var slot = await _slotRepository.GetByDateAsync(initTime);
+                if (slot == null)
+                {
+                    await _slotRepository.CreateAsync(new Slot
+                    {
+                        StartTime = initTime
+                    });
+                }
+              
 
                 initTime.AddHours(1); //adicionar 1 hora (tempo de cada reunião)
             } while (initTime < endTime);

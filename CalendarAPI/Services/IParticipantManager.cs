@@ -14,5 +14,7 @@ namespace CalendarAPI.Services
         IQueryable<Slot> PossibleSchedules(Participant participantOne, Participant participantTwo);
 
         bool IsSingleParticipantValid(Participant participant);
+
+        void CreateAvailability(Participant participant);
     }
 }

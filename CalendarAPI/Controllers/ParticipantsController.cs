@@ -30,7 +30,8 @@ namespace CalendarAPI.Controllers
 
             if (_manager.IsSingleParticipantValid(participant))
             {
-               await _participantRepository.CreateAsync(participant);
+                await _participantRepository.CreateAsync(participant);
+                _manager.CreateAvailability(participant);
                 return Ok();
             }
             return BadRequest();

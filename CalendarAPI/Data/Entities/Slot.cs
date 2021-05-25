@@ -14,15 +14,6 @@ namespace CalendarAPI.Data.Entities
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime StartTime { get; set; }
-        
-
-
-        public int InterviewerId { get; set; }
-        public virtual Participant Interviewer { get; set; }
-
-
-
-        public int CandidadeId { get; set; }
-        public virtual Participant CandidateId { get; set; }
+     
     }
 }

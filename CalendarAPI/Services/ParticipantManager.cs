@@ -10,10 +10,12 @@ namespace CalendarAPI.Services
     public class ParticipantManager : IParticipantManager
     {
         private readonly ISlotRepository _slotRepository;
+        private readonly IMeetingRepository _meetingRepository;
 
-        public ParticipantManager(ISlotRepository slotRepository)
+        public ParticipantManager(ISlotRepository slotRepository, IMeetingRepository meetingRepository)
         {
             _slotRepository = slotRepository;
+            _meetingRepository = meetingRepository;
         }
 
         public bool AreParticipantsValid(Participant participantOne, Participant participantTwo)
@@ -68,7 +70,23 @@ namespace CalendarAPI.Services
                         StartTime = initTime
                     });
                 }
-              
+
+                if (participant.Role == Helpers.Enums.Role.interviewer)
+                {
+                    await _meetingRepository.CreateAsync(new Meeting
+                    {
+                        InterviewerId = participant.Id
+                    });
+                }
+                if (participant.Role == Helpers.Enums.Role.candidate)
+                {
+                    await _meetingRepository.CreateAsync(new Meeting
+                    {
+                        InterviewerId = participant.Id
+                    });
+                }
+               
+                
 
                 initTime.AddHours(1); //adicionar 1 hora (tempo de cada reunião)
             } while (initTime < endTime);

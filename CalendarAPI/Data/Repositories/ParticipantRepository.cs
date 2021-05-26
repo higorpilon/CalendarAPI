@@ -62,21 +62,38 @@ namespace CalendarAPI.Data.Repositories
         //services
 
 
-        public bool AreParticipantsValid(Participant participantOne, Participant participantTwo)
+        public async Task<bool> AreParticipantsValid(int participantOne, int participantTwo)
         {
-            if (participantOne == null || participantTwo == null)
+
+            var one = await _context.Set<Participant>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == participantOne);
+
+            var two = await _context.Set<Participant>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == participantTwo);
+
+            if (string.IsNullOrEmpty(one.Role) || string.IsNullOrEmpty(two.Role))
             {
                 return false;
             }
 
-            if (participantOne.Role != participantTwo.Role)
+            if (one.Role == "interviewer")
             {
-                return true;
+                if (two.Role == "candidadate")
+                {
+                    return true;
+                }
+
             }
-            else
+
+
+            if (two.Role == "interviewer")
             {
-                return false;
+                if (one.Role == "candidadate")
+                {
+                    return true;
+                }
+
             }
+
+            return false;
         }
 
         public bool IsSingleParticipantValid(Participant participant)
@@ -119,21 +136,27 @@ namespace CalendarAPI.Data.Repositories
                     });
                 }
 
-                initTime.AddHours(1); //adicionar 1 hora (tempo de cada reunião)
+                initTime = initTime.AddHours(1); //adicionar 1 hora (tempo de cada reunião)
             } while (initTime < endTime);
+            _context.SaveChanges();
         }
 
-        public IEnumerable<string> PossibleSchedules(Participant participantOne, Participant participantTwo)
+        public async Task<IEnumerable<string>> PossibleSchedules(int participantOne, int participantTwo)
         {
-            if (AreParticipantsValid(participantOne, participantTwo))
+
+            var one = await _context.Set<Participant>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == participantOne);
+
+            var two = await _context.Set<Participant>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == participantTwo);
+
+            if (await AreParticipantsValid(one.Id, two.Id))
             {
                 List<string> q1 = new List<string>();
-                foreach (var item in _context.Set<Slot>().AsNoTracking().Where(x => x.ParticipantId == participantOne.Id))
+                foreach (var item in _context.Set<Slot>().AsNoTracking().Where(x => x.ParticipantId == one.Id))
                 {
                     q1.Add(item.StartTime.ToString());
                 }
                 List<string> q2 = new List<string>();
-                foreach (var item in _context.Set<Slot>().AsNoTracking().Where(x => x.ParticipantId == participantTwo.Id))
+                foreach (var item in _context.Set<Slot>().AsNoTracking().Where(x => x.ParticipantId == two.Id))
                 {
                     q2.Add(item.StartTime.ToString());
                 }

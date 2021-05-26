@@ -1,5 +1,4 @@
-﻿using CalendarAPI.Helpers.Enums;
-using Newtonsoft.Json.Converters;
+﻿using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,9 +30,8 @@ namespace CalendarAPI.Data.Entities
         [DataType(DataType.DateTime)]
         public DateTime FinalTime { get; set; }
 
-
-        [JsonConverter(typeof(StringEnumConverter))]
+        
         [Required]
-        public Role Role { get; set; }
+        public string Role { get; set; }
     }
 }

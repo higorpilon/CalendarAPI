@@ -1,6 +1,5 @@
 ﻿using CalendarAPI.Data.Entities;
 using CalendarAPI.Data.Repositories;
-using CalendarAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,12 +14,11 @@ namespace CalendarAPI.Controllers
     public class ParticipantsController : ControllerBase
     {
         private readonly IParticipantRepository _participantRepository;
-        private readonly IParticipantManager _manager;
 
-        public ParticipantsController(IParticipantRepository participantRepository, IParticipantManager manager)
+        public ParticipantsController(IParticipantRepository participantRepository)
         {
             _participantRepository = participantRepository;
-            _manager = manager;
+
         }
 
         [HttpPost]
@@ -29,14 +27,26 @@ namespace CalendarAPI.Controllers
         public async Task<IActionResult> Insert(Participant participant)
         {
 
-            if (_manager.IsSingleParticipantValid(participant))
+            if (_participantRepository.IsSingleParticipantValid(participant))
             {
                 await _participantRepository.CreateAsync(participant);
-                _manager.CreateAvailability(participant);
+                _participantRepository.CreateAvailability(participant);
                 return Ok();
             }
             return BadRequest();
         }
 
+        [HttpGet("details")]
+        [Route("[action]")]
+        [Route("api/Participants/GetCalendar")]
+        public async Task<IEnumerable<string>> GetCalendar([FromQuery] int participantOne, [FromQuery] int participantTwo)
+        {
+            if (await _participantRepository.AreParticipantsValid(participantOne, participantTwo))
+            {
+                return await _participantRepository.PossibleSchedules(participantOne, participantTwo);
+            }
+
+            return null;
+        }
     }
 }

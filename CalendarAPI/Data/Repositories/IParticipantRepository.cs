@@ -28,9 +28,9 @@ namespace CalendarAPI.Data.Repositories
 
         //services
 
-        bool AreParticipantsValid(Participant participantOne, Participant participantTwo);
+        Task<bool> AreParticipantsValid(int participantOne, int participantTwo);
 
-        IEnumerable<string> PossibleSchedules(Participant participantOne, Participant participantTwo);
+        Task<IEnumerable<string>> PossibleSchedules(int participantOne, int participantTwo);
 
         bool IsSingleParticipantValid(Participant participant);
 

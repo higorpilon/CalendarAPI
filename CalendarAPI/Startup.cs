@@ -1,6 +1,6 @@
 using CalendarAPI.Data;
 using CalendarAPI.Data.Repositories;
-using CalendarAPI.Services;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,7 +36,7 @@ namespace CalendarAPI
             });
 
             services.AddScoped<IParticipantRepository, ParticipantRepository>();
-           
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,6 +56,8 @@ namespace CalendarAPI
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+
+
             });
         }
     }

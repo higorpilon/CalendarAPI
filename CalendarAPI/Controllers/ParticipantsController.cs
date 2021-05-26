@@ -23,8 +23,9 @@ namespace CalendarAPI.Controllers
             _manager = manager;
         }
 
-
         [HttpPost]
+        [Route("[action]")]
+        [Route("api/Participants/Insert")]
         public async Task<IActionResult> Insert(Participant participant)
         {
 

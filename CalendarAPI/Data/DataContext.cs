@@ -11,10 +11,7 @@ namespace CalendarAPI.Data
     {
 
         public DbSet<Slot> Slots { get; set; }
-
-
-        public DbSet<Meeting> Meetings { get; set; }
-
+     
 
         public DbSet<Participant> Participants { get; set; }
 

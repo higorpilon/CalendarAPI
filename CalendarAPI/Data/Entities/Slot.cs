@@ -11,9 +11,16 @@ namespace CalendarAPI.Data.Entities
         [Key]
         public int Id { get; set; }
 
+
         [Required]
         [DataType(DataType.DateTime)]
         public DateTime StartTime { get; set; }
-     
+
+
+        public int ParticipantId { get; set; }
+
+
+        public virtual Participant Participant { get; set; }
+
     }
 }

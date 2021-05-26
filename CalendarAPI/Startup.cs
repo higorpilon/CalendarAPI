@@ -36,7 +36,7 @@ namespace CalendarAPI
             });
 
             services.AddScoped<IParticipantRepository, ParticipantRepository>();
-            services.AddScoped<IParticipantManager, ParticipantManager>();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

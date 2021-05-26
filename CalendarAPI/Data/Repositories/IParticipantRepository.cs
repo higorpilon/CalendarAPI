@@ -24,5 +24,16 @@ namespace CalendarAPI.Data.Repositories
 
 
         Task<bool> ExistAsync(int id);
+
+
+        //services
+
+        bool AreParticipantsValid(Participant participantOne, Participant participantTwo);
+
+        IEnumerable<string> PossibleSchedules(Participant participantOne, Participant participantTwo);
+
+        bool IsSingleParticipantValid(Participant participant);
+
+        void CreateAvailability(Participant participant);
     }
 }

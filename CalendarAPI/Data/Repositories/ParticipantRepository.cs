@@ -76,7 +76,7 @@ namespace CalendarAPI.Data.Repositories
 
             if (one.Role == "interviewer")
             {
-                if (two.Role == "candidadate")
+                if (two.Role == "candidate")
                 {
                     return true;
                 }
@@ -86,7 +86,7 @@ namespace CalendarAPI.Data.Repositories
 
             if (two.Role == "interviewer")
             {
-                if (one.Role == "candidadate")
+                if (one.Role == "candidate")
                 {
                     return true;
                 }
@@ -148,26 +148,23 @@ namespace CalendarAPI.Data.Repositories
 
             var two = await _context.Set<Participant>().AsNoTracking().FirstOrDefaultAsync(e => e.Id == participantTwo);
 
-            if (await AreParticipantsValid(one.Id, two.Id))
-            {
-                List<string> q1 = new List<string>();
-                foreach (var item in _context.Set<Slot>().AsNoTracking().Where(x => x.ParticipantId == one.Id))
-                {
-                    q1.Add(item.StartTime.ToString());
-                }
-                List<string> q2 = new List<string>();
-                foreach (var item in _context.Set<Slot>().AsNoTracking().Where(x => x.ParticipantId == two.Id))
-                {
-                    q2.Add(item.StartTime.ToString());
-                }
 
-                var query = q1.Intersect(q2);
-                return query;
-            }
-            else
+            List<string> q1 = new List<string>();
+            foreach (var item in _context.Set<Slot>().AsNoTracking().Where(x => x.ParticipantId == one.Id))
             {
-                return null;
+                q1.Add(item.StartTime.ToString());
             }
+            List<string> q2 = new List<string>();
+            foreach (var item in _context.Set<Slot>().AsNoTracking().Where(x => x.ParticipantId == two.Id))
+            {
+                q2.Add(item.StartTime.ToString());
+            }
+
+            var query = q1.Intersect(q2);
+            return query;
+
+
+
         }
 
     }

@@ -36,9 +36,9 @@ namespace CalendarAPI.Controllers
             return BadRequest();
         }
 
-        [HttpGet("details")]
+        [HttpGet]
         [Route("[action]")]
-        [Route("api/Participants/GetCalendar")]
+        [Route("api/Participants/GetCalendar/{participantOne}/{participantTwo}")]
         public async Task<IEnumerable<string>> GetCalendar([FromQuery] int participantOne, [FromQuery] int participantTwo)
         {
             if (await _participantRepository.AreParticipantsValid(participantOne, participantTwo))
